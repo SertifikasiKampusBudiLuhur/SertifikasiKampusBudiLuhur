@@ -1,9 +1,10 @@
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
-import { GraduationCap, LogOut, User } from 'lucide-react'
+import { LogOut } from 'lucide-react'
 import NavLinks from './_components/NavLinks'
 import Image from 'next/image'
+import FooterBL from '@/app/_components/FooterBL'
 
 export default async function MahasiswaLayout({ children }: { children: React.ReactNode }) {
   const supabase = createClient()
@@ -71,6 +72,8 @@ export default async function MahasiswaLayout({ children }: { children: React.Re
       <main className="max-w-7xl mx-auto">
         {children}
       </main>
+
+      <FooterBL />
     </div>
   )
 }
