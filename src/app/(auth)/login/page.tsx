@@ -9,7 +9,7 @@ import { createClient } from '@/lib/supabase/client'
 export default function LoginPage() {
   const router = useRouter()
   const supabase = createClient()
-  const [email, setEmail] = useState('')
+  const [nim, setNim] = useState('')
   const [password, setPassword] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
@@ -19,9 +19,25 @@ export default function LoginPage() {
     setLoading(true)
     setError('')
 
-    const { error } = await supabase.auth.signInWithPassword({ email, password })
-    if (error) {
-      setError('Email atau password salah.')
+    // Resolve NIM → email via server-side lookup
+    const res = await fetch('/api/auth/nim-to-email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ nim: nim.trim() }),
+    })
+
+    if (!res.ok) {
+      const data = await res.json()
+      setError(data.error ?? 'NIM tidak ditemukan.')
+      setLoading(false)
+      return
+    }
+
+    const { email } = await res.json()
+
+    const { error: authError } = await supabase.auth.signInWithPassword({ email, password })
+    if (authError) {
+      setError('NIM atau password salah.')
       setLoading(false)
       return
     }
@@ -45,7 +61,7 @@ export default function LoginPage() {
         </div>
 
         <h1 className="text-2xl font-bold text-slate-900 mb-1">Masuk ke Akun</h1>
-        <p className="text-slate-500 text-sm mb-6">Masukkan email dan password yang terdaftar</p>
+        <p className="text-slate-500 text-sm mb-6">Masukkan NIM dan password yang terdaftar</p>
 
         {error && (
           <div className="bg-red-50 border border-red-200 text-red-700 rounded-lg px-4 py-3 mb-4 text-sm">
@@ -55,17 +71,25 @@ export default function LoginPage() {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="label">Email</label>
+            <label className="label">NIM</label>
             <input
-              type="email" value={email} onChange={e => setEmail(e.target.value)}
-              className="input" placeholder="mahasiswa@kampus.ac.id" required
+              type="text"
+              value={nim}
+              onChange={e => setNim(e.target.value)}
+              className="input"
+              placeholder="2021001234"
+              required
             />
           </div>
           <div>
             <label className="label">Password</label>
             <input
-              type="password" value={password} onChange={e => setPassword(e.target.value)}
-              className="input" placeholder="••••••••" required
+              type="password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
+              className="input"
+              placeholder="••••••••"
+              required
             />
           </div>
           <button type="submit" className="btn-primary w-full py-2.5" disabled={loading}>

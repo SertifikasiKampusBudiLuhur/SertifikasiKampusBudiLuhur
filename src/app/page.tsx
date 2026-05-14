@@ -1,10 +1,11 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { createClient } from '@/lib/supabase/server'
-import { Calendar, Users, ArrowRight, Zap, Shield, CheckCircle, MapPin, Wifi, Layers } from 'lucide-react'
-import { formatRupiah, formatDate } from '@/lib/utils'
+import { Users, ArrowRight, Zap, Shield, CheckCircle, MapPin, Wifi, Layers } from 'lucide-react'
+import { formatRupiah } from '@/lib/utils'
 import { CertificationProgram } from '@/types'
 import ProgramCarousel from './_components/ProgramCarousel'
+import ProgramsGrid from './_components/ProgramsGrid'
 import FooterBL from './_components/FooterBL'
 import MobileNav from './_components/MobileNav'
 
@@ -73,87 +74,79 @@ export default async function LandingPage() {
       </nav>
 
       {/* ── Hero ─────────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 text-white">
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-blue-800/30 via-transparent to-transparent" />
-        <div className="relative max-w-7xl mx-auto px-6 py-20 md:py-28">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+      <section
+        className="relative overflow-hidden text-white"
+        style={{
+          backgroundImage: "url('https://images.unsplash.com/photo-1758270704587-43339a801396?auto=format&fit=crop&w=1920&q=80')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
+        {/* Dark overlay — keeps text readable over the photo */}
+        <div className="absolute inset-0 bg-[#0d1b3e]/75" />
+        {/* Subtle bottom gradient to blend into next section */}
+        <div className="absolute bottom-0 inset-x-0 h-24 bg-gradient-to-t from-white/5 to-transparent" />
 
-            {/* Left — text */}
-            <div>
-              <span className="inline-flex items-center gap-2 bg-blue-500/15 text-blue-300 text-xs font-semibold px-4 py-1.5 rounded-full mb-6 border border-blue-500/25">
-                <span className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-pulse" />
-                Sistem Resmi Sertifikasi Universitas Budi Luhur
-              </span>
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-5 leading-tight tracking-tight">
-                Tingkatkan<br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
-                  Kompetensimu
-                </span>
-              </h1>
-              <p className="text-base md:text-lg text-slate-300 mb-8 leading-relaxed max-w-lg">
-                Sebagai mahasiswa Universitas Budi Luhur, daftarkan dirimu ke program
-                sertifikasi kompetensi secara online — pembayaran otomatis via QRIS,
-                VA Bank, atau e-wallet, tanpa antri dan tanpa upload bukti transfer.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-3">
-                <Link href="/register"
-                  className="inline-flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-400 text-white font-bold px-7 py-3.5 rounded-xl transition-all shadow-lg shadow-blue-900/40 text-sm">
-                  Daftar Sekarang <ArrowRight size={16} />
-                </Link>
-                <a href="#program"
-                  className="inline-flex items-center justify-center bg-white/8 hover:bg-white/15 text-white font-semibold px-7 py-3.5 rounded-xl transition-colors border border-white/15 text-sm">
-                  Lihat Program
-                </a>
-              </div>
-            </div>
-
-            {/* Right — info card */}
-            <div className="hidden md:block">
-              <div className="bg-white/5 border border-white/10 rounded-2xl p-6 space-y-4 backdrop-blur-sm">
-                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Alur Pendaftaran</p>
-                {[
-                  { step: '01', title: 'Buat Akun', desc: 'Daftar dengan NIM dan email aktif UBL' },
-                  { step: '02', title: 'Pilih Program', desc: 'Pilih sertifikasi yang sesuai bidangmu' },
-                  { step: '03', title: 'Bayar Otomatis', desc: 'QRIS, VA, atau e-wallet via Midtrans' },
-                  { step: '04', title: 'Tunggu Verifikasi', desc: 'Admin memverifikasi kelayakanmu' },
-                ].map(s => (
-                  <div key={s.step} className="flex items-start gap-4">
-                    <span className="w-8 h-8 rounded-lg bg-blue-500/20 text-blue-300 text-xs font-black flex items-center justify-center flex-shrink-0">
-                      {s.step}
-                    </span>
-                    <div>
-                      <p className="text-sm font-semibold text-white">{s.title}</p>
-                      <p className="text-xs text-slate-400 mt-0.5">{s.desc}</p>
-                    </div>
-                  </div>
-                ))}
-                <div className="pt-3 border-t border-white/10 grid grid-cols-3 gap-3 text-center">
-                  {[
-                    { val: `${programs?.length ?? 0}+`, label: 'Program Aktif' },
-                    { val: '100%',                      label: 'Bayar Otomatis' },
-                    { val: '24/7',                      label: 'Status Real-time' },
-                  ].map(s => (
-                    <div key={s.label}>
-                      <p className="text-xl font-black text-blue-400">{s.val}</p>
-                      <p className="text-[10px] text-slate-400 mt-0.5 leading-tight">{s.label}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
+        <div className="relative max-w-5xl mx-auto px-6 pt-24 pb-28 md:pt-32 md:pb-36">
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 text-blue-200 text-xs font-semibold px-4 py-2 rounded-full mb-8">
+            <span className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-pulse shrink-0" />
+            Sistem Resmi Sertifikasi Universitas Budi Luhur
           </div>
 
-          {/* Mobile stats */}
-          <div className="md:hidden grid grid-cols-3 gap-4 mt-10 pt-8 border-t border-white/10">
+          {/* Heading */}
+          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold leading-[1.05] tracking-tight mb-6">
+            Raih Sertifikat<br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-300">
+              Resmi Kampus
+            </span><br />
+            dengan Mudah
+          </h1>
+
+          {/* Sub */}
+          <p className="text-white/80 text-base md:text-xl leading-relaxed max-w-2xl mb-10">
+            Daftarkan dirimu dalam program sertifikasi kampus dan tingkatkan kompetensimu.
+            Proses mudah, cepat, dan terverifikasi secara resmi.
+          </p>
+
+          {/* CTAs */}
+          <div className="flex flex-col sm:flex-row gap-3">
+            <Link href="/register"
+              className="inline-flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-400 text-white font-bold px-8 py-4 rounded-xl transition-all shadow-xl shadow-blue-900/40 text-sm">
+              Daftar Sekarang <ArrowRight size={16} />
+            </Link>
+            <a href="#program"
+              className="inline-flex items-center justify-center bg-white/10 hover:bg-white/20 text-white font-semibold px-8 py-4 rounded-xl transition-colors border border-white/20 text-sm backdrop-blur-sm">
+              Lihat Program
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Alur Pendaftaran ─────────────────────────────────────── */}
+      <section className="py-16 px-6 bg-white border-b border-slate-100">
+        <div className="max-w-5xl mx-auto">
+          <div className="text-center mb-10">
+            <p className="text-blue-600 font-semibold text-sm mb-2">Cara Daftar</p>
+            <h2 className="text-2xl md:text-3xl font-bold text-slate-900">Alur Pendaftaran</h2>
+          </div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
-              { val: `${programs?.length ?? 0}+`, label: 'Program Aktif' },
-              { val: '100%',                      label: 'Bayar Otomatis' },
-              { val: '24/7',                      label: 'Real-time' },
-            ].map(s => (
-              <div key={s.label} className="text-center">
-                <p className="text-2xl font-black text-blue-400">{s.val}</p>
-                <p className="text-xs text-slate-400 mt-1">{s.label}</p>
+              { step: '01', title: 'Buat Akun', desc: 'Daftar dengan NIM dan email aktif UBL' },
+              { step: '02', title: 'Pilih Program', desc: 'Pilih sertifikasi yang sesuai bidangmu' },
+              { step: '03', title: 'Bayar Otomatis', desc: 'QRIS, VA, atau e-wallet via Midtrans' },
+              { step: '04', title: 'Tunggu Verifikasi', desc: 'Admin memverifikasi kelayakanmu' },
+            ].map((s, i, arr) => (
+              <div key={s.step} className="relative flex flex-col items-center text-center">
+                {/* connector line */}
+                {i < arr.length - 1 && (
+                  <div className="hidden md:block absolute top-6 left-[calc(50%+28px)] right-[-calc(50%-28px)] h-px bg-blue-100 w-[calc(100%-56px)]" />
+                )}
+                <div className="w-12 h-12 rounded-xl bg-blue-600 text-white text-sm font-black flex items-center justify-center mb-4 shadow-md shadow-blue-200 flex-shrink-0 relative z-10">
+                  {s.step}
+                </div>
+                <p className="font-bold text-slate-900 text-sm mb-1">{s.title}</p>
+                <p className="text-xs text-slate-500 leading-relaxed">{s.desc}</p>
               </div>
             ))}
           </div>
@@ -195,62 +188,7 @@ export default async function LandingPage() {
               <p>Belum ada program yang tersedia saat ini</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-              {programs.map((program: CertificationProgram) => {
-                const sisa = program.kuota - program.kuota_terisi
-                const penuh = sisa <= 0
-                const sesi = SESI_BADGE[program.tipe_sesi] ?? SESI_BADGE.offline
-                return (
-                  <div key={program.id}
-                    className="group bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col hover:shadow-lg hover:border-blue-200 transition-all duration-200">
-                    {program.banner_url ? (
-                      <div className="overflow-hidden h-48 relative">
-                        <img src={program.banner_url} alt={program.nama}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                        <span className={`absolute top-3 left-3 inline-flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-full border ${sesi.cls}`}>
-                          {sesi.icon} {sesi.label}
-                        </span>
-                      </div>
-                    ) : (
-                      <div className="h-48 bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 flex items-center justify-center p-6 relative">
-                        <span className="text-white font-bold text-base text-center leading-snug">{program.nama}</span>
-                        <span className={`absolute top-3 left-3 inline-flex items-center gap-1 text-xs font-bold px-2.5 py-1 rounded-full border ${sesi.cls}`}>
-                          {sesi.icon} {sesi.label}
-                        </span>
-                      </div>
-                    )}
-                    <div className="p-5 flex flex-col flex-1">
-                      <h3 className="font-bold text-slate-900 mb-1 line-clamp-2 leading-snug">{program.nama}</h3>
-                      {program.deskripsi && (
-                        <p className="text-slate-500 text-sm mb-3 line-clamp-2 leading-relaxed">{program.deskripsi}</p>
-                      )}
-                      <div className="flex flex-wrap gap-2 mb-4">
-                        <span className="inline-flex items-center gap-1.5 text-xs text-blue-700 bg-blue-50 border border-blue-100 px-2.5 py-1 rounded-full font-medium">
-                          <Calendar size={10} /> {formatDate(program.tanggal_mulai)}
-                        </span>
-                        <span className={`inline-flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full border font-medium ${
-                          penuh ? 'text-red-600 bg-red-50 border-red-100' : 'text-emerald-700 bg-emerald-50 border-emerald-100'
-                        }`}>
-                          <Users size={10} /> {penuh ? 'Kuota Penuh' : `${sisa} kursi tersisa`}
-                        </span>
-                      </div>
-                      <div className="mt-auto flex items-center justify-between pt-4 border-t border-slate-100">
-                        <div>
-                          <p className="text-xs text-slate-400">Biaya pendaftaran</p>
-                          <p className="text-blue-700 font-bold text-base">
-                            {program.biaya === 0 ? 'GRATIS' : formatRupiah(program.biaya)}
-                          </p>
-                        </div>
-                        <Link href="/login"
-                          className="flex items-center gap-1.5 text-sm font-semibold bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-xl transition-colors">
-                          Daftar <ArrowRight size={14} />
-                        </Link>
-                      </div>
-                    </div>
-                  </div>
-                )
-              })}
-            </div>
+            <ProgramsGrid programs={programs} />
           )}
         </div>
       </section>
@@ -366,7 +304,7 @@ export default async function LandingPage() {
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/register"
                 className="bg-blue-500 hover:bg-blue-400 text-white font-bold px-8 py-4 rounded-xl transition-colors text-sm shadow-lg shadow-blue-900/30">
-                Buat Akun Gratis
+                Buat Akun
               </Link>
               <Link href="/login"
                 className="bg-white/10 hover:bg-white/20 text-white font-semibold px-8 py-4 rounded-xl transition-colors border border-white/15 text-sm">
