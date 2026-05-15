@@ -194,7 +194,7 @@ export default async function LandingPage() {
       </section>
 
       {/* ── Jadwal ───────────────────────────────────────────────── */}
-      <section id="jadwal" className="py-20 px-6 bg-slate-50">
+      <section id="jadwal" className="py-20 px-6">
         <div className="max-w-4xl mx-auto">
           <div className="mb-12">
             <p className="text-blue-600 font-semibold text-sm mb-2">Jadwal Mendatang</p>
@@ -255,12 +255,12 @@ export default async function LandingPage() {
       </section>
 
       {/* ── Fitur ────────────────────────────────────────────────── */}
-      <section id="fitur" className="py-20 px-6 bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 text-white">
+      <section id="fitur" className="py-20 px-6 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="mb-14">
-            <p className="text-blue-400 font-semibold text-sm mb-2">Kenapa Pakai Sistem Ini?</p>
-            <h2 className="text-3xl md:text-4xl font-bold">Sertifikasi UBL Jadi Lebih Mudah</h2>
-            <p className="text-slate-400 mt-2 text-base max-w-xl">
+            <p className="text-blue-600 font-semibold text-sm mb-2">Kenapa Pakai Sistem Ini?</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900">Sertifikasi UBL Jadi Lebih Mudah</h2>
+            <p className="text-slate-500 mt-2 text-base max-w-xl">
               Dirancang khusus untuk mahasiswa Universitas Budi Luhur — proses cepat, transparan, dan terverifikasi.
             </p>
           </div>
@@ -285,29 +285,29 @@ export default async function LandingPage() {
                 desc: 'Lacak setiap tahap — dari pembayaran hingga persetujuan akhir — langsung dari dashboard mahasiswamu.',
               },
             ].map(f => (
-              <div key={f.title} className="bg-white/5 hover:bg-white/8 border border-white/10 rounded-2xl p-7 transition-colors">
-                <div className={`w-12 h-12 ${f.color} rounded-xl flex items-center justify-center text-white mb-5 shadow-lg`}>
+              <div key={f.title} className="bg-blue-600 rounded-2xl p-7 hover:bg-blue-700 transition-colors">
+                <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center text-white mb-5">
                   {f.icon}
                 </div>
                 <h3 className="font-bold text-white text-lg mb-2">{f.title}</h3>
-                <p className="text-slate-400 text-sm leading-relaxed">{f.desc}</p>
+                <p className="text-blue-100 text-sm leading-relaxed">{f.desc}</p>
               </div>
             ))}
           </div>
 
           {/* CTA */}
-          <div className="mt-16 text-center bg-white/5 border border-white/10 rounded-2xl p-10">
+          <div className="mt-16 text-center bg-blue-600 rounded-2xl p-10">
             <h3 className="text-2xl font-bold text-white mb-3">Mahasiswa UBL? Daftar Sekarang.</h3>
-            <p className="text-slate-400 mb-8 max-w-md mx-auto">
+            <p className="text-blue-100 mb-8 max-w-md mx-auto">
               Buat akun dengan NIM-mu dan mulai daftar program sertifikasi yang tersedia.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/register"
-                className="bg-blue-500 hover:bg-blue-400 text-white font-bold px-8 py-4 rounded-xl transition-colors text-sm shadow-lg shadow-blue-900/30">
+                className="bg-white hover:bg-blue-50 text-blue-700 font-bold px-8 py-4 rounded-xl transition-colors text-sm shadow-md">
                 Buat Akun
               </Link>
               <Link href="/login"
-                className="bg-white/10 hover:bg-white/20 text-white font-semibold px-8 py-4 rounded-xl transition-colors border border-white/15 text-sm">
+                className="bg-white/15 hover:bg-white/25 text-white font-semibold px-8 py-4 rounded-xl transition-colors border border-white/25 text-sm">
                 Sudah Punya Akun
               </Link>
             </div>
