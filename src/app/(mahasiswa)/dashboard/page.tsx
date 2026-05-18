@@ -26,16 +26,16 @@ export default async function DashboardPage() {
   }
 
   return (
-    <div className="p-8">
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-slate-900">
+    <div className="p-4 sm:p-6 md:p-8">
+      <div className="mb-6">
+        <h1 className="text-xl sm:text-2xl font-bold text-slate-900">
           Halo, {profile?.nama_lengkap?.split(' ')[0]} 👋
         </h1>
-        <p className="text-slate-500 mt-1">NIM: {profile?.nim} · {profile?.program_studi}</p>
+        <p className="text-slate-500 mt-1 text-sm">NIM: {profile?.nim} · {profile?.program_studi}</p>
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4 mb-6 sm:mb-8">
         {[
           { label: 'Total Pendaftaran', value: stats.total, icon: <BookOpen size={20} />, color: 'text-blue-600 bg-blue-50' },
           { label: 'Sedang Diproses', value: stats.pending, icon: <Clock size={20} />, color: 'text-yellow-600 bg-yellow-50' },

@@ -74,22 +74,22 @@ export default async function AdminDashboardPage() {
   }).sort((a, b) => b.revenue - a.revenue) ?? []
 
   return (
-    <div className="p-8 space-y-8">
+    <div className="p-4 sm:p-6 md:p-8 space-y-6 md:space-y-8">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Dashboard Admin</h1>
-          <p className="text-slate-500 mt-1">Ringkasan sistem registrasi sertifikasi</p>
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Dashboard Admin</h1>
+          <p className="text-slate-500 mt-1 text-sm">Ringkasan sistem registrasi sertifikasi</p>
         </div>
         <Link href="/admin/registrations?status=PAID"
-          className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg transition-colors">
+          className="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg transition-colors whitespace-nowrap">
           <AlertCircle size={15} />
           {statMap.paid} Perlu Verifikasi
         </Link>
       </div>
 
       {/* ── Row 1: Status cards ──────────────────────────────────── */}
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4">
         {[
           { label: 'Total Pendaftar', value: statMap.total,           icon: <Users size={18} />,        color: 'text-slate-600 bg-slate-100' },
           { label: 'Pending Payment', value: statMap.pending_payment, icon: <Clock size={18} />,        color: 'text-yellow-600 bg-yellow-50' },
@@ -106,7 +106,7 @@ export default async function AdminDashboardPage() {
       </div>
 
       {/* ── Row 2: Revenue cards ─────────────────────────────────── */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
         <div className="card p-5 border-l-4 border-l-emerald-500">
           <div className="flex items-center justify-between mb-2">
             <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">Total Revenue Masuk</p>
@@ -269,7 +269,7 @@ export default async function AdminDashboardPage() {
       </div>
 
       {/* ── Row 4: Program terkecil & info ──────────────────────────── */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
         <div className="card p-5">
           <div className="flex items-center gap-2 mb-3">
             <Award size={18} className="text-yellow-500" />

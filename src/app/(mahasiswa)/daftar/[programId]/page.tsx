@@ -117,7 +117,7 @@ export default function DaftarPage({ params }: { params: { programId: string } }
   }
 
   return (
-    <div className="p-8 max-w-2xl mx-auto">
+    <div className="p-4 sm:p-6 md:p-8 max-w-2xl mx-auto">
       <Link href={`/programs/${program.id}`}
         className="flex items-center gap-2 text-slate-500 hover:text-slate-700 mb-6 text-sm">
         <ArrowLeft size={16} /> Kembali ke Detail Program

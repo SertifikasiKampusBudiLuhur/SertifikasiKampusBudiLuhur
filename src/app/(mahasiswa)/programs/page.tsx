@@ -19,8 +19,8 @@ export default async function ProgramsPage() {
     .order('tanggal_mulai', { ascending: true })
 
   return (
-    <div className="p-8">
-      <div className="mb-8">
+    <div className="p-4 sm:p-6 md:p-8">
+      <div className="mb-6 sm:mb-8">
         <h1 className="text-2xl font-bold text-slate-900">Program Sertifikasi</h1>
         <p className="text-slate-500 mt-1">Pilih program sertifikasi yang sesuai dengan kebutuhanmu</p>
       </div>

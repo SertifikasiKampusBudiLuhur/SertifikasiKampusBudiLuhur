@@ -11,17 +11,18 @@ export default async function AdminProgramsPage() {
     .order('created_at', { ascending: false })
 
   return (
-    <div className="p-8">
-      <div className="flex items-center justify-between mb-8">
+    <div className="p-4 sm:p-6 md:p-8">
+      <div className="flex flex-wrap items-start justify-between gap-3 mb-6 sm:mb-8">
         <div>
-          <h1 className="text-2xl font-bold text-slate-900">Program Sertifikasi</h1>
-          <p className="text-slate-500 mt-1">Kelola program sertifikasi yang tersedia</p>
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Program Sertifikasi</h1>
+          <p className="text-slate-500 mt-1 text-sm">Kelola program sertifikasi yang tersedia</p>
         </div>
         <ProgramFormModal mode="create" />
       </div>
 
       <div className="card overflow-hidden">
-        <table className="w-full text-sm">
+        <div className="overflow-x-auto">
+        <table className="w-full text-sm min-w-[600px]">
           <thead className="bg-slate-50 border-b border-slate-200">
             <tr>
               {['Nama Program', 'Biaya', 'Kuota', 'Tanggal', 'Status', 'Aksi'].map(h => (
@@ -72,6 +73,7 @@ export default async function AdminProgramsPage() {
             Belum ada program. Klik "Tambah Program" untuk mulai.
           </div>
         )}
+        </div>
       </div>
     </div>
   )

@@ -27,7 +27,7 @@ export default async function MahasiswaLayout({ children }: { children: React.Re
     <div className="min-h-screen bg-slate-50">
       {/* Top Navbar */}
       <nav className="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-sm">
-        <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between gap-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-3 sm:gap-6">
           {/* Logo */}
           <Image
             src="/logo/Logo BLU Horizontal Colour.png"
@@ -69,7 +69,7 @@ export default async function MahasiswaLayout({ children }: { children: React.Re
       </nav>
 
       {/* Content */}
-      <main className="max-w-7xl mx-auto">
+      <main className="w-full max-w-7xl mx-auto">
         {children}
       </main>
 
