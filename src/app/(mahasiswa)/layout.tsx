@@ -4,7 +4,7 @@ import { createClient } from '@/lib/supabase/server'
 import { LogOut } from 'lucide-react'
 import NavLinks from './_components/NavLinks'
 import Image from 'next/image'
-import FooterBL from '@/app/_components/FooterBL'
+import FooterApp from '@/app/_components/FooterApp'
 
 export default async function MahasiswaLayout({ children }: { children: React.ReactNode }) {
   const supabase = createClient()
@@ -24,7 +24,7 @@ export default async function MahasiswaLayout({ children }: { children: React.Re
     .toUpperCase() ?? 'MHS'
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-slate-50 flex flex-col">
       {/* Top Navbar */}
       <nav className="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-3 sm:gap-6">
@@ -69,11 +69,11 @@ export default async function MahasiswaLayout({ children }: { children: React.Re
       </nav>
 
       {/* Content */}
-      <main className="w-full max-w-7xl mx-auto">
+      <main className="flex-1 w-full max-w-7xl mx-auto">
         {children}
       </main>
 
-      <FooterBL />
+      <FooterApp />
     </div>
   )
 }
