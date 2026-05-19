@@ -7,7 +7,7 @@ export default function FooterBL() {
   return (
     <footer>
       {/* Main footer — dark navy */}
-      <div className="bg-[#0d1b3e] text-white px-6 pt-12 pb-10">
+      <div className="bg-blue-800 text-white px-6 pt-12 pb-10">
         <div className="max-w-7xl mx-auto">
 
           {/* Logos row */}
@@ -114,7 +114,7 @@ export default function FooterBL() {
       </div>
 
       {/* Yellow copyright bar */}
-      <div className="bg-yellow-400 py-3 px-6">
+      <div className="bg-accent-400 py-3 px-6">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-1 text-xs font-medium text-slate-800">
           <span>Hak Cipta © {year} Universitas Budi Luhur. All Rights Reserved.</span>
           <span>Sistem Registrasi Sertifikasi Kampus</span>

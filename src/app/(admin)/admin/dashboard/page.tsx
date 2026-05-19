@@ -197,7 +197,7 @@ export default async function AdminDashboardPage() {
                       <div
                         className={`h-full rounded-full transition-all ${
                           prog.fillRate >= 90 ? 'bg-red-400' :
-                          prog.fillRate >= 60 ? 'bg-yellow-400' : 'bg-blue-400'
+                          prog.fillRate >= 60 ? 'bg-accent-400' : 'bg-blue-400'
                         }`}
                         style={{ width: `${Math.min(prog.fillRate, 100)}%` }}
                       />
@@ -272,7 +272,7 @@ export default async function AdminDashboardPage() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
         <div className="card p-5">
           <div className="flex items-center gap-2 mb-3">
-            <Award size={18} className="text-yellow-500" />
+            <Award size={18} className="text-accent-400" />
             <p className="font-semibold text-slate-800 text-sm">Program Terlaris</p>
           </div>
           {programStats[0] ? (

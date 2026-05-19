@@ -4,8 +4,8 @@
 
 @layer base {
   :root {
-    --primary: #1d4ed8;
-    --primary-dark: #1e3a8a;
+    --primary: #00255a;
+    --primary-dark: #001c47;
   }
   * { box-sizing: border-box; }
 }

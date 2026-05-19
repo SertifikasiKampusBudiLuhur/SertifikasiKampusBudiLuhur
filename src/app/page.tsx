@@ -83,7 +83,7 @@ export default async function LandingPage() {
         }}
       >
         {/* Dark overlay — keeps text readable over the photo */}
-        <div className="absolute inset-0 bg-[#0d1b3e]/75" />
+        <div className="absolute inset-0 bg-blue-800/75" />
         {/* Subtle bottom gradient to blend into next section */}
         <div className="absolute bottom-0 inset-x-0 h-24 bg-gradient-to-t from-white/5 to-transparent" />
 
