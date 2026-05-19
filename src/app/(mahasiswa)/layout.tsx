@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { LogOut } from 'lucide-react'
 import NavLinks from './_components/NavLinks'
+import MahasiswaMobileNav from './_components/MahasiswaMobileNav'
 import Image from 'next/image'
 import FooterApp from '@/app/_components/FooterApp'
 
@@ -26,26 +27,28 @@ export default async function MahasiswaLayout({ children }: { children: React.Re
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
       {/* Top Navbar */}
-      <nav className="sticky top-0 z-50 bg-white border-b border-slate-200 shadow-sm">
+      <nav className="sticky top-0 z-40 bg-white border-b border-slate-200 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-3 sm:gap-6">
           {/* Logo */}
-          <Image
-            src="/logo/Logo BLU Horizontal Colour.png"
-            alt="BLU"
-            width={140}
-            height={46}
-            className="h-10 w-auto"
-            priority
-          />
+          <Link href="/dashboard" className="flex-shrink-0">
+            <Image
+              src="/logo/Logo BLU Horizontal Colour.png"
+              alt="BLU"
+              width={140}
+              height={46}
+              className="h-9 sm:h-10 w-auto"
+              priority
+            />
+          </Link>
 
-          {/* Nav Links */}
-          <div className="flex-1 flex justify-center">
+          {/* Desktop Nav Links */}
+          <div className="hidden md:flex flex-1 justify-center">
             <NavLinks />
           </div>
 
-          {/* User Info + Logout */}
-          <div className="flex items-center gap-3 flex-shrink-0">
-            <Link href={'/profil'} className="hidden md:flex items-center gap-2.5">
+          {/* Desktop: User Info + Logout */}
+          <div className="hidden md:flex items-center gap-3 flex-shrink-0">
+            <Link href="/profil" className="flex items-center gap-2.5">
               <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
                 <span className="text-xs font-bold text-blue-700">{initials}</span>
               </div>
@@ -56,15 +59,24 @@ export default async function MahasiswaLayout({ children }: { children: React.Re
                 <p className="text-xs text-slate-400">{profile?.nim}</p>
               </div>
             </Link>
-            <div className="w-px h-6 bg-slate-200 hidden md:block" />
+            <div className="w-px h-6 bg-slate-200" />
             <form action="/api/auth/logout" method="POST">
-              <button type="submit"
-                className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-red-500 hover:bg-red-50 px-3 py-2 rounded-lg transition-colors">
+              <button
+                type="submit"
+                className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-red-500 hover:bg-red-50 px-3 py-2 rounded-lg transition-colors"
+              >
                 <LogOut size={15} />
-                <span className="hidden sm:inline font-medium">Keluar</span>
+                <span className="font-medium">Keluar</span>
               </button>
             </form>
           </div>
+
+          {/* Mobile: Hamburger drawer */}
+          <MahasiswaMobileNav
+            nama={profile?.nama_lengkap ?? 'Mahasiswa'}
+            nim={profile?.nim ?? ''}
+            initials={initials}
+          />
         </div>
       </nav>
 

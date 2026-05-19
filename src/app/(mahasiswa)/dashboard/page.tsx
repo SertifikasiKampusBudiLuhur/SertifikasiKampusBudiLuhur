@@ -68,14 +68,14 @@ export default async function DashboardPage() {
         ) : (
           <div className="divide-y divide-slate-100">
             {registrations.map((reg: Registration & { program: any }) => (
-              <div key={reg.id} className="px-5 py-4 flex items-center justify-between">
-                <div>
-                  <p className="font-medium text-slate-800">{reg.program?.nama}</p>
-                  <p className="text-sm text-slate-400 mt-0.5">
+              <div key={reg.id} className="px-4 sm:px-5 py-4 flex items-start sm:items-center justify-between gap-3">
+                <div className="flex-1 min-w-0">
+                  <p className="font-medium text-slate-800 text-sm sm:text-base line-clamp-2 sm:truncate">{reg.program?.nama}</p>
+                  <p className="text-xs sm:text-sm text-slate-400 mt-0.5">
                     {formatDate(reg.created_at)} · {formatRupiah(reg.program?.biaya ?? 0)}
                   </p>
                 </div>
-                <span className={`text-xs font-medium px-2.5 py-1 rounded-full ${STATUS_COLOR[reg.status as keyof typeof STATUS_COLOR]}`}>
+                <span className={`shrink-0 text-xs font-medium px-2.5 py-1 rounded-full ${STATUS_COLOR[reg.status as keyof typeof STATUS_COLOR]}`}>
                   {STATUS_LABEL[reg.status as keyof typeof STATUS_LABEL]}
                 </span>
               </div>

@@ -91,7 +91,7 @@ export default function RegisterPage() {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="label">NIM <span className="text-red-500">*</span></label>
               <input name="nim" value={form.nim} onChange={handleChange}
@@ -133,7 +133,7 @@ export default function RegisterPage() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="label">Password <span className="text-red-500">*</span></label>
               <input type="password" name="password" value={form.password} onChange={handleChange}

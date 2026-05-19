@@ -141,18 +141,18 @@ export default function DaftarPage({ params }: { params: { programId: string } }
       </div>
 
       {/* Konfirmasi data diri */}
-      <div className="card p-5 mb-6">
+      <div className="card p-4 sm:p-5 mb-6">
         <h2 className="font-semibold text-slate-700 mb-4">Konfirmasi Data Diri</h2>
-        <div className="grid grid-cols-2 gap-3 text-sm">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
           {[
             ['Nama Lengkap', profile?.nama_lengkap],
             ['NIM', profile?.nim],
             ['Program Studi', profile?.program_studi],
             ['Angkatan', profile?.angkatan],
           ].map(([label, val]) => (
-            <div key={label}>
-              <p className="text-slate-400">{label}</p>
-              <p className="font-medium text-slate-800">{val}</p>
+            <div key={label} className="min-w-0">
+              <p className="text-xs text-slate-400">{label}</p>
+              <p className="font-medium text-slate-800 truncate">{val}</p>
             </div>
           ))}
         </div>

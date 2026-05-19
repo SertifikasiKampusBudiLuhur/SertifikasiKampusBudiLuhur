@@ -32,10 +32,10 @@ export default async function JadwalPage() {
   const now = new Date()
 
   return (
-    <div className="p-8">
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-slate-900">Jadwal Sertifikasi</h1>
-        <p className="text-slate-500 mt-1">Semua program sertifikasi yang akan datang</p>
+    <div className="p-4 sm:p-6 md:p-8">
+      <div className="mb-6 sm:mb-8">
+        <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Jadwal Sertifikasi</h1>
+        <p className="text-slate-500 mt-1 text-sm">Semua program sertifikasi yang akan datang</p>
       </div>
 
       {!programs?.length ? (
@@ -70,58 +70,87 @@ export default async function JadwalPage() {
                   return (
                     <div
                       key={program.id}
-                      className={`group flex items-center gap-4 p-4 rounded-2xl border transition-all ${
+                      className={`group p-3 sm:p-4 rounded-2xl border transition-all ${
                         isPast
                           ? 'bg-slate-50 border-slate-200 opacity-60'
                           : 'bg-white border-slate-200 hover:border-blue-200 hover:shadow-md hover:shadow-blue-50'
                       }`}
                     >
-                      {/* Date box */}
-                      <div className={`flex-shrink-0 w-14 h-16 rounded-xl flex flex-col items-center justify-center text-white shadow-md ${
-                        isPast ? 'bg-slate-400' : 'bg-gradient-to-br from-blue-500 to-blue-700 shadow-blue-200'
-                      }`}>
-                        <span className="text-[10px] font-bold leading-none tracking-wider">
-                          {d.toLocaleDateString('id-ID', { month: 'short' }).toUpperCase()}
-                        </span>
-                        <span className="text-2xl font-black leading-none mt-0.5">{d.getDate()}</span>
-                      </div>
-
-                      {/* Poster thumbnail (if available) */}
-                      {program.banner_url && !isPast && (
-                        <div className="hidden sm:block flex-shrink-0 w-12 h-14 rounded-lg overflow-hidden border border-slate-200">
-                          <img src={program.banner_url} alt="" className="w-full h-full object-cover" />
-                        </div>
-                      )}
-
-                      {/* Info */}
-                      <div className="flex-1 min-w-0">
-                        <p className="font-semibold text-slate-900 group-hover:text-blue-800 transition-colors line-clamp-1 mb-1.5">
-                          {program.nama}
-                        </p>
-                        <div className="flex flex-wrap items-center gap-2">
-                          <span className={`inline-flex items-center gap-1 text-xs font-medium px-2 py-0.5 rounded-full border ${sesi.cls}`}>
-                            {sesi.icon} {sesi.label}
+                      <div className="flex items-start gap-3 sm:gap-4">
+                        {/* Date box */}
+                        <div className={`flex-shrink-0 w-12 sm:w-14 h-14 sm:h-16 rounded-xl flex flex-col items-center justify-center text-white shadow-md ${
+                          isPast ? 'bg-slate-400' : 'bg-gradient-to-br from-blue-500 to-blue-700 shadow-blue-200'
+                        }`}>
+                          <span className="text-[10px] font-bold leading-none tracking-wider">
+                            {d.toLocaleDateString('id-ID', { month: 'short' }).toUpperCase()}
                           </span>
-                          {program.lokasi && (
-                            <span className="flex items-center gap-1 text-xs text-slate-500">
-                              <MapPin size={10} /> {program.lokasi}
+                          <span className="text-xl sm:text-2xl font-black leading-none mt-0.5">{d.getDate()}</span>
+                        </div>
+
+                        {/* Poster thumbnail (sm and up only) */}
+                        {program.banner_url && !isPast && (
+                          <div className="hidden sm:block flex-shrink-0 w-12 h-14 rounded-lg overflow-hidden border border-slate-200">
+                            <img src={program.banner_url} alt="" className="w-full h-full object-cover" />
+                          </div>
+                        )}
+
+                        {/* Info */}
+                        <div className="flex-1 min-w-0">
+                          <p className="font-semibold text-slate-900 group-hover:text-blue-800 transition-colors line-clamp-2 sm:line-clamp-1 text-sm sm:text-base mb-1.5">
+                            {program.nama}
+                          </p>
+                          <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                            <span className={`inline-flex items-center gap-1 text-[11px] sm:text-xs font-medium px-2 py-0.5 rounded-full border ${sesi.cls}`}>
+                              {sesi.icon} {sesi.label}
                             </span>
-                          )}
-                          <span className={`flex items-center gap-1 text-xs font-medium ${
-                            penuh ? 'text-red-500' : 'text-emerald-600'
-                          }`}>
-                            <Users size={10} />
-                            {penuh ? 'Kuota penuh' : `${sisa} kursi tersisa`}
+                            <span className={`flex items-center gap-1 text-[11px] sm:text-xs font-medium ${
+                              penuh ? 'text-red-500' : 'text-emerald-600'
+                            }`}>
+                              <Users size={10} />
+                              {penuh ? 'Penuh' : `${sisa} kursi`}
+                            </span>
+                            {program.lokasi && (
+                              <span className="hidden sm:flex items-center gap-1 text-xs text-slate-500 truncate max-w-[200px]">
+                                <MapPin size={10} className="flex-shrink-0" /> {program.lokasi}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+
+                        {/* Price (always visible) */}
+                        <div className="flex-shrink-0 text-right">
+                          <span className="text-sm font-bold text-blue-700 block">
+                            {program.biaya === 0 ? 'Gratis' : formatRupiah(program.biaya)}
                           </span>
                         </div>
                       </div>
 
-                      {/* Price + Action */}
-                      <div className="flex-shrink-0 flex flex-col items-end gap-2">
-                        <span className="text-sm font-bold text-blue-700">
-                          {program.biaya === 0 ? 'Gratis' : formatRupiah(program.biaya)}
-                        </span>
-                        {!isPast && (
+                      {/* Action row (separate on mobile so button has room) */}
+                      <div className="flex items-center justify-between mt-3 pt-3 border-t border-slate-100 sm:hidden">
+                        {program.lokasi && (
+                          <span className="flex items-center gap-1 text-[11px] text-slate-500 truncate flex-1 min-w-0 mr-3">
+                            <MapPin size={10} className="flex-shrink-0" /> {program.lokasi}
+                          </span>
+                        )}
+                        {!isPast ? (
+                          <Link
+                            href={penuh ? '#' : `/programs/${program.id}`}
+                            className={`inline-flex items-center gap-1 text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors flex-shrink-0 ${
+                              penuh
+                                ? 'bg-slate-100 text-slate-400 cursor-not-allowed pointer-events-none'
+                                : 'bg-blue-600 hover:bg-blue-700 text-white'
+                            }`}
+                          >
+                            {penuh ? 'Penuh' : <>Detail <ArrowRight size={11} /></>}
+                          </Link>
+                        ) : (
+                          <span className="text-xs text-slate-400 font-medium px-2 py-1 bg-slate-100 rounded-lg flex-shrink-0">Selesai</span>
+                        )}
+                      </div>
+
+                      {/* Desktop action — inline */}
+                      <div className="hidden sm:flex items-center justify-end mt-2">
+                        {!isPast ? (
                           <Link
                             href={penuh ? '#' : `/programs/${program.id}`}
                             className={`inline-flex items-center gap-1 text-xs font-semibold px-3 py-1.5 rounded-lg transition-colors ${
@@ -132,8 +161,7 @@ export default async function JadwalPage() {
                           >
                             {penuh ? 'Penuh' : <>Detail <ArrowRight size={11} /></>}
                           </Link>
-                        )}
-                        {isPast && (
+                        ) : (
                           <span className="text-xs text-slate-400 font-medium px-2 py-1 bg-slate-100 rounded-lg">Selesai</span>
                         )}
                       </div>
