@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
+import { ArrowLeft } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 
 const PRODI_OPTIONS = [
@@ -69,17 +70,25 @@ export default function RegisterPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-slate-100 flex items-center justify-center px-4 py-10">
-      <div className="card w-full max-w-lg p-8">
-        <div className="mb-6">
-          <Image
-            src="/logo/Logo BLU Horizontal Colour.png"
-            alt="BLU"
-            width={160}
-            height={52}
-            className="h-12 w-auto"
-            priority
-          />
-        </div>
+      <div className="w-full max-w-lg">
+        <Link
+          href="/"
+          className="inline-flex items-center gap-1.5 text-sm font-medium text-slate-500 hover:text-blue-600 mb-4 transition-colors"
+        >
+          <ArrowLeft size={16} /> Kembali ke Beranda
+        </Link>
+
+        <div className="card w-full p-8">
+          <div className="mb-6">
+            <Image
+              src="/logo/Logo BLU Horizontal Colour.png"
+              alt="BLU"
+              width={160}
+              height={52}
+              className="h-12 w-auto"
+              priority
+            />
+          </div>
 
         <h1 className="text-2xl font-bold text-slate-900 mb-1">Buat Akun Baru</h1>
         <p className="text-slate-500 text-sm mb-6">Lengkapi data diri untuk mendaftar</p>
@@ -155,6 +164,7 @@ export default function RegisterPage() {
           Sudah punya akun?{' '}
           <Link href="/login" className="text-blue-600 font-medium hover:underline">Masuk</Link>
         </p>
+        </div>
       </div>
     </div>
   )
