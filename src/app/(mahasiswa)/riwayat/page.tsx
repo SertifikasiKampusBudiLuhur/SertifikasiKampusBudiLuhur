@@ -37,7 +37,7 @@ export default async function RiwayatPage({
   }
 
   return (
-    <div className="p-4 sm:p-6 md:p-8">
+    <div className="p-4 sm:p-6 md:p-8 max-w-4xl mx-auto">
       <div className="mb-6">
         <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Riwayat Pendaftaran</h1>
         <p className="text-slate-500 mt-1 text-sm">Semua riwayat pendaftaran sertifikasimu</p>

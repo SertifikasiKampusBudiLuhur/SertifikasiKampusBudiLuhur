@@ -32,7 +32,7 @@ export default async function JadwalPage() {
   const now = new Date()
 
   return (
-    <div className="p-4 sm:p-6 md:p-8">
+    <div className="p-4 sm:p-6 md:p-8 max-w-4xl mx-auto">
       <div className="mb-6 sm:mb-8">
         <h1 className="text-xl sm:text-2xl font-bold text-slate-900">Jadwal Sertifikasi</h1>
         <p className="text-slate-500 mt-1 text-sm">Semua program sertifikasi yang akan datang</p>
