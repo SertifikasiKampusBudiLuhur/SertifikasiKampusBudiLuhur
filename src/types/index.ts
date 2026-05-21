@@ -19,6 +19,7 @@ export interface Profile {
   angkatan: string
   no_wa?: string
   ktm_url?: string
+  avatar_url?: string
   role: Role
   created_at: string
   updated_at: string
@@ -37,6 +38,8 @@ export interface CertificationProgram {
   tanggal_selesai?: string
   lokasi?: string
   tipe_sesi: TipeSesi
+  sesi_1?: string
+  sesi_2?: string
   is_active: boolean
   banner_url?: string
   created_by?: string

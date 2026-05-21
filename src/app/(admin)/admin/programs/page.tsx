@@ -1,9 +1,13 @@
 import { createClient } from '@/lib/supabase/server'
 import { formatRupiah, formatDate } from '@/lib/utils'
 import { ProgramFormModal } from './ProgramFormModal'
-import { Pencil, Trash2, Plus, Users } from 'lucide-react'
+import { Trash2, Users, CheckCircle, AlertCircle } from 'lucide-react'
 
-export default async function AdminProgramsPage() {
+export default async function AdminProgramsPage({
+  searchParams,
+}: {
+  searchParams: { deleted?: string; error?: string }
+}) {
   const supabase = createClient()
   const { data: programs } = await supabase
     .from('certification_programs')
@@ -19,6 +23,19 @@ export default async function AdminProgramsPage() {
         </div>
         <ProgramFormModal mode="create" />
       </div>
+
+      {searchParams.deleted && (
+        <div className="flex items-center gap-2 bg-green-50 border border-green-200 text-green-700 rounded-lg px-4 py-3 mb-5 text-sm">
+          <CheckCircle size={16} className="flex-shrink-0" />
+          Program berhasil dihapus.
+        </div>
+      )}
+      {searchParams.error && (
+        <div className="flex items-start gap-2 bg-red-50 border border-red-200 text-red-700 rounded-lg px-4 py-3 mb-5 text-sm">
+          <AlertCircle size={16} className="flex-shrink-0 mt-0.5" />
+          <span>Gagal menghapus program: {searchParams.error}</span>
+        </div>
+      )}
 
       <div className="card overflow-hidden">
         <div className="overflow-x-auto">
@@ -36,6 +53,18 @@ export default async function AdminProgramsPage() {
                 <td className="px-4 py-3">
                   <p className="font-medium text-slate-800">{p.nama}</p>
                   {p.lokasi && <p className="text-xs text-slate-400">{p.lokasi}</p>}
+                  <div className="flex flex-wrap gap-1 mt-1.5">
+                    {p.sesi_1 && (
+                      <span className="text-[10px] font-medium bg-blue-50 text-blue-600 border border-blue-100 px-1.5 py-0.5 rounded">
+                        {p.sesi_1}
+                      </span>
+                    )}
+                    {p.sesi_2 && (
+                      <span className="text-[10px] font-medium bg-blue-50 text-blue-600 border border-blue-100 px-1.5 py-0.5 rounded">
+                        {p.sesi_2}
+                      </span>
+                    )}
+                  </div>
                 </td>
                 <td className="px-4 py-3">{p.biaya === 0 ? 'Gratis' : formatRupiah(p.biaya)}</td>
                 <td className="px-4 py-3">

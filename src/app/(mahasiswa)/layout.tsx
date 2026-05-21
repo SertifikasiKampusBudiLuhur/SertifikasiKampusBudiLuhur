@@ -49,8 +49,13 @@ export default async function MahasiswaLayout({ children }: { children: React.Re
           {/* Desktop: User Info + Logout */}
           <div className="hidden md:flex items-center gap-3 flex-shrink-0">
             <Link href="/profil" className="flex items-center gap-2.5">
-              <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
-                <span className="text-xs font-bold text-blue-700">{initials}</span>
+              <div className="w-8 h-8 rounded-full overflow-hidden bg-blue-100 flex items-center justify-center flex-shrink-0">
+                {profile?.avatar_url ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={profile.avatar_url} alt="Foto profil" className="w-full h-full object-cover" />
+                ) : (
+                  <span className="text-xs font-bold text-blue-700">{initials}</span>
+                )}
               </div>
               <div className="text-right leading-tight">
                 <p className="text-sm font-semibold text-slate-800 truncate max-w-[140px]">
@@ -76,6 +81,7 @@ export default async function MahasiswaLayout({ children }: { children: React.Re
             nama={profile?.nama_lengkap ?? 'Mahasiswa'}
             nim={profile?.nim ?? ''}
             initials={initials}
+            avatarUrl={profile?.avatar_url ?? null}
           />
         </div>
       </nav>

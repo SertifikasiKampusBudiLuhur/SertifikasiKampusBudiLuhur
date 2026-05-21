@@ -161,6 +161,17 @@ INSERT INTO public.certification_programs (
 
 
 -- ============================================================
+-- BACKFILL SESI (jalankan setelah migration_v4.sql)
+-- Mahasiswa wajib pilih salah satu sesi saat mendaftar.
+-- ============================================================
+UPDATE public.certification_programs
+SET
+  sesi_1 = COALESCE(NULLIF(sesi_1, ''), 'Sesi Pagi (08.00 - 12.00)'),
+  sesi_2 = COALESCE(NULLIF(sesi_2, ''), 'Sesi Siang (13.00 - 17.00)')
+WHERE sesi_1 IS NULL OR sesi_2 IS NULL OR sesi_1 = '' OR sesi_2 = '';
+
+
+-- ============================================================
 -- CARA MEMBUAT AKUN TEST (jalankan terpisah)
 -- ============================================================
 --

@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { formatRupiah, formatDate, formatDateTime, STATUS_LABEL, STATUS_COLOR } from '@/lib/utils'
-import { Download } from 'lucide-react'
+import { Download, ArrowRight } from 'lucide-react'
+import Link from 'next/link'
 import PayButton from './PayButton'
 
 export default async function RiwayatPage({
@@ -74,6 +75,12 @@ export default async function RiwayatPage({
                     <p className="text-xs sm:text-sm text-slate-400 mt-0.5">
                       Didaftarkan: {formatDateTime(reg.created_at)}
                     </p>
+                    <Link
+                      href={`/programs/${reg.program_id}`}
+                      className="inline-flex items-center gap-1 text-xs font-semibold text-blue-600 hover:text-blue-700 hover:underline mt-1.5"
+                    >
+                      Lihat detail program <ArrowRight size={12} />
+                    </Link>
                   </div>
                   <span className={`shrink-0 text-xs font-semibold px-3 py-1 rounded-full ${STATUS_COLOR[reg.status as keyof typeof STATUS_COLOR]}`}>
                     {STATUS_LABEL[reg.status as keyof typeof STATUS_LABEL]}

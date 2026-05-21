@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, Eye, EyeOff } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 
 const PRODI_OPTIONS = [
@@ -20,6 +20,8 @@ export default function RegisterPage() {
     nim: '', nama_lengkap: '', program_studi: '', angkatan: '',
     no_wa: '', email: '', password: '', konfirmasi_password: '',
   })
+  const [showPassword, setShowPassword] = useState(false)
+  const [showKonfirmasi, setShowKonfirmasi] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
@@ -30,6 +32,16 @@ export default function RegisterPage() {
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
     setError('')
+
+    // Semua field wajib diisi
+    if (
+      !form.nim.trim() || !form.nama_lengkap.trim() || !form.program_studi ||
+      !form.angkatan.trim() || !form.no_wa.trim() || !form.email.trim() ||
+      !form.password || !form.konfirmasi_password
+    ) {
+      setError('Semua field wajib diisi.')
+      return
+    }
 
     if (form.password !== form.konfirmasi_password) {
       setError('Password dan konfirmasi password tidak cocok.')
@@ -129,9 +141,9 @@ export default function RegisterPage() {
           </div>
 
           <div>
-            <label className="label">Nomor WhatsApp <span className="text-slate-400">(opsional)</span></label>
+            <label className="label">Nomor WhatsApp <span className="text-red-500">*</span></label>
             <input name="no_wa" value={form.no_wa} onChange={handleChange}
-              className="input" placeholder="08123456789" />
+              className="input" placeholder="08123456789" required />
           </div>
 
           <div className="border-t border-slate-100 pt-4">
@@ -145,13 +157,47 @@ export default function RegisterPage() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <label className="label">Password <span className="text-red-500">*</span></label>
-              <input type="password" name="password" value={form.password} onChange={handleChange}
-                className="input" placeholder="Min. 8 karakter" required />
+              <div className="relative">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  name="password"
+                  value={form.password}
+                  onChange={handleChange}
+                  className="input pr-10"
+                  placeholder="Min. 8 karakter"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(v => !v)}
+                  aria-label={showPassword ? 'Sembunyikan password' : 'Tampilkan password'}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                >
+                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
+              </div>
             </div>
             <div>
               <label className="label">Konfirmasi Password <span className="text-red-500">*</span></label>
-              <input type="password" name="konfirmasi_password" value={form.konfirmasi_password}
-                onChange={handleChange} className="input" placeholder="Ulangi password" required />
+              <div className="relative">
+                <input
+                  type={showKonfirmasi ? 'text' : 'password'}
+                  name="konfirmasi_password"
+                  value={form.konfirmasi_password}
+                  onChange={handleChange}
+                  className="input pr-10"
+                  placeholder="Ulangi password"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowKonfirmasi(v => !v)}
+                  aria-label={showKonfirmasi ? 'Sembunyikan password' : 'Tampilkan password'}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                >
+                  {showKonfirmasi ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
+              </div>
             </div>
           </div>
 

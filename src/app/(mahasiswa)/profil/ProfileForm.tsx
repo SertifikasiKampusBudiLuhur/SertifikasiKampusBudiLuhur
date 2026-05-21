@@ -3,7 +3,7 @@
 import { useState, useRef } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
-import { Upload, X, FileText, CheckCircle } from 'lucide-react'
+import { Upload, X, FileText, CheckCircle, Camera, User } from 'lucide-react'
 import { Profile } from '@/types'
 
 interface Props {
@@ -15,6 +15,7 @@ export default function ProfileForm({ profile, ktmSignedUrl }: Props) {
   const supabase = createClient()
   const router = useRouter()
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const avatarInputRef = useRef<HTMLInputElement>(null)
 
   const [form, setForm] = useState({
     nama_lengkap: profile.nama_lengkap,
@@ -24,9 +25,30 @@ export default function ProfileForm({ profile, ktmSignedUrl }: Props) {
   })
   const [ktmFile, setKtmFile] = useState<File | null>(null)
   const [ktmPreview, setKtmPreview] = useState<string | null>(null)
+  const [avatarFile, setAvatarFile] = useState<File | null>(null)
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  function handleAvatarChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp']
+    if (!allowedTypes.includes(file.type)) {
+      setError('Format foto tidak didukung. Gunakan JPG, PNG, atau WebP.')
+      return
+    }
+    if (file.size > 2 * 1024 * 1024) {
+      setError('Ukuran foto profil maksimal 2 MB.')
+      return
+    }
+
+    setError(null)
+    setAvatarFile(file)
+    setAvatarPreview(URL.createObjectURL(file))
+  }
 
   function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0]
@@ -65,7 +87,24 @@ export default function ProfileForm({ profile, ktmSignedUrl }: Props) {
 
     try {
       let ktm_url = profile.ktm_url
+      let avatar_url = profile.avatar_url
 
+      // Upload foto profil
+      if (avatarFile) {
+        const ext = avatarFile.name.split('.').pop()
+        const path = `${profile.id}/avatar.${ext}`
+        const { error: avatarErr } = await supabase.storage
+          .from('avatars')
+          .upload(path, avatarFile, { upsert: true, contentType: avatarFile.type })
+
+        if (avatarErr) throw new Error('Gagal upload foto profil: ' + avatarErr.message)
+
+        const { data: urlData } = supabase.storage.from('avatars').getPublicUrl(path)
+        // cache-bust agar foto baru langsung tampil
+        avatar_url = `${urlData.publicUrl}?t=${Date.now()}`
+      }
+
+      // Upload KTM
       if (ktmFile) {
         const ext = ktmFile.name.split('.').pop()
         const path = `${profile.id}/ktm.${ext}`
@@ -85,6 +124,7 @@ export default function ProfileForm({ profile, ktmSignedUrl }: Props) {
           angkatan: form.angkatan.trim(),
           no_wa: form.no_wa.trim() || null,
           ...(ktm_url !== profile.ktm_url ? { ktm_url } : {}),
+          ...(avatar_url !== profile.avatar_url ? { avatar_url } : {}),
         })
         .eq('id', profile.id)
 
@@ -92,6 +132,7 @@ export default function ProfileForm({ profile, ktmSignedUrl }: Props) {
 
       setSuccess(true)
       setKtmFile(null)
+      setAvatarFile(null)
       router.refresh()
     } catch (err: any) {
       setError(err.message)
@@ -99,6 +140,8 @@ export default function ProfileForm({ profile, ktmSignedUrl }: Props) {
       setLoading(false)
     }
   }
+
+  const currentAvatar = avatarPreview ?? profile.avatar_url ?? null
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
@@ -112,6 +155,58 @@ export default function ProfileForm({ profile, ktmSignedUrl }: Props) {
           {error}
         </div>
       )}
+
+      {/* Foto Profil */}
+      <div className="card p-6">
+        <h2 className="font-semibold text-slate-800 mb-1">Foto Profil</h2>
+        <p className="text-sm text-slate-500 mb-4">
+          Upload foto profil kamu. Format: JPG, PNG, atau WebP. Maks 2 MB.
+        </p>
+
+        <div className="flex items-center gap-5">
+          {/* Avatar preview */}
+          <div className="relative flex-shrink-0">
+            <div className="w-24 h-24 rounded-full overflow-hidden bg-blue-50 border-2 border-slate-200 flex items-center justify-center">
+              {currentAvatar ? (
+                <img src={currentAvatar} alt="Foto profil" className="w-full h-full object-cover" />
+              ) : (
+                <User size={40} className="text-blue-300" />
+              )}
+            </div>
+            <button
+              type="button"
+              onClick={() => avatarInputRef.current?.click()}
+              className="absolute -bottom-1 -right-1 w-8 h-8 bg-blue-600 hover:bg-blue-700 text-white rounded-full flex items-center justify-center shadow-md transition-colors"
+              title="Ganti foto"
+            >
+              <Camera size={15} />
+            </button>
+          </div>
+
+          <div>
+            <button
+              type="button"
+              onClick={() => avatarInputRef.current?.click()}
+              className="btn-secondary text-sm"
+            >
+              {currentAvatar ? 'Ganti Foto' : 'Pilih Foto'}
+            </button>
+            {avatarFile && (
+              <p className="text-xs text-emerald-600 font-medium mt-2">
+                Foto baru dipilih — klik &quot;Simpan Perubahan&quot; untuk menyimpan.
+              </p>
+            )}
+          </div>
+
+          <input
+            ref={avatarInputRef}
+            type="file"
+            accept="image/jpeg,image/png,image/webp"
+            className="hidden"
+            onChange={handleAvatarChange}
+          />
+        </div>
+      </div>
 
       {/* Data diri */}
       <div className="card p-6">
@@ -152,7 +247,7 @@ export default function ProfileForm({ profile, ktmSignedUrl }: Props) {
           </div>
           <div className="md:col-span-2">
             <label className="block text-sm font-medium text-slate-700 mb-1">
-              No. WhatsApp <span className="text-slate-400 font-normal">(opsional)</span>
+              No. WhatsApp
             </label>
             <input
               value={form.no_wa}

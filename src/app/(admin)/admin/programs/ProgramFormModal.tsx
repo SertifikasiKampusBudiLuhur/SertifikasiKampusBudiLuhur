@@ -36,6 +36,8 @@ export function ProgramFormModal({ mode, program }: Props) {
     tanggal_selesai: program?.tanggal_selesai ?? '',
     lokasi: program?.lokasi ?? '',
     tipe_sesi: (program?.tipe_sesi ?? 'offline') as TipeSesi,
+    sesi_1: program?.sesi_1 ?? '',
+    sesi_2: program?.sesi_2 ?? '',
     is_active: program?.is_active ?? true,
     banner_url: program?.banner_url ?? '',
   })
@@ -88,6 +90,12 @@ export function ProgramFormModal({ mode, program }: Props) {
     setLoading(true)
     setError('')
 
+    if (!form.sesi_1.trim() || !form.sesi_2.trim()) {
+      setError('Sesi 1 dan Sesi 2 wajib diisi — mahasiswa harus memilih salah satu saat mendaftar.')
+      setLoading(false)
+      return
+    }
+
     const payload = {
       nama: form.nama,
       deskripsi: form.deskripsi,
@@ -97,6 +105,8 @@ export function ProgramFormModal({ mode, program }: Props) {
       tanggal_selesai: form.tanggal_selesai || null,
       lokasi: form.lokasi,
       tipe_sesi: form.tipe_sesi,
+      sesi_1: form.sesi_1.trim(),
+      sesi_2: form.sesi_2.trim(),
       is_active: form.is_active,
       banner_url: form.banner_url || null,
     }
@@ -273,6 +283,44 @@ export function ProgramFormModal({ mode, program }: Props) {
                   <label className="label">Tanggal Selesai</label>
                   <input type="date" name="tanggal_selesai" value={form.tanggal_selesai} onChange={handleChange}
                     className="input" />
+                </div>
+              </div>
+
+              {/* Sesi / Slot Waktu — wajib, mahasiswa pilih salah satu saat daftar */}
+              <div className="rounded-xl border border-blue-200 bg-blue-50/60 p-3">
+                <label className="label !mb-0.5">
+                  Sesi Pilihan <span className="text-red-500">*</span>
+                </label>
+                <p className="text-xs text-slate-500 mb-2.5">
+                  Tentukan 2 slot sesi. Mahasiswa wajib memilih salah satu saat mendaftar.
+                </p>
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <span className="flex-shrink-0 w-12 text-center text-xs font-bold text-blue-700 bg-blue-100 rounded-lg py-2">
+                      Sesi 1
+                    </span>
+                    <input
+                      name="sesi_1"
+                      value={form.sesi_1}
+                      onChange={handleChange}
+                      className="input"
+                      placeholder="Contoh: Sesi Pagi (08.00 - 12.00)"
+                      required
+                    />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="flex-shrink-0 w-12 text-center text-xs font-bold text-blue-700 bg-blue-100 rounded-lg py-2">
+                      Sesi 2
+                    </span>
+                    <input
+                      name="sesi_2"
+                      value={form.sesi_2}
+                      onChange={handleChange}
+                      className="input"
+                      placeholder="Contoh: Sesi Siang (13.00 - 17.00)"
+                      required
+                    />
+                  </div>
                 </div>
               </div>
 

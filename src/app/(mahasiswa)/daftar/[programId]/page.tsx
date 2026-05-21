@@ -116,6 +116,8 @@ export default function DaftarPage({ params }: { params: { programId: string } }
     return <div className="p-8 text-center text-slate-400">Program tidak ditemukan.</div>
   }
 
+  const sesiOptions = [program.sesi_1, program.sesi_2].filter(Boolean) as string[]
+
   return (
     <div className="p-4 sm:p-6 md:p-8 max-w-2xl mx-auto">
       <Link href={`/programs/${program.id}`}
@@ -158,12 +160,43 @@ export default function DaftarPage({ params }: { params: { programId: string } }
         </div>
       </div>
 
-      <form onSubmit={handleBayar} className="card p-5 space-y-4">
+      <form onSubmit={handleBayar} className="card p-4 sm:p-5 space-y-4">
         <h2 className="font-semibold text-slate-700">Detail Pendaftaran</h2>
         <div>
-          <label className="label">Jadwal Pilihan</label>
-          <input value={jadwal} onChange={e => setJadwal(e.target.value)}
-            className="input" placeholder="Contoh: Sesi Pagi (08.00–12.00)" required />
+          <label className="label">Pilih Sesi <span className="text-red-500">*</span></label>
+          {sesiOptions.length > 0 ? (
+            <div className="space-y-2">
+              {sesiOptions.map((s) => (
+                <label
+                  key={s}
+                  className={`flex items-center gap-3 p-3 rounded-xl border-2 cursor-pointer transition-all ${
+                    jadwal === s
+                      ? 'border-blue-500 bg-blue-50'
+                      : 'border-slate-200 hover:border-slate-300'
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="sesi"
+                    value={s}
+                    checked={jadwal === s}
+                    onChange={e => setJadwal(e.target.value)}
+                    className="w-4 h-4 accent-blue-600"
+                    required
+                  />
+                  <span className="text-sm font-medium text-slate-800">{s}</span>
+                </label>
+              ))}
+            </div>
+          ) : (
+            <input
+              value={jadwal}
+              onChange={e => setJadwal(e.target.value)}
+              className="input"
+              placeholder="Contoh: Sesi Pagi (08.00 - 12.00)"
+              required
+            />
+          )}
         </div>
         <div>
           <label className="label">Catatan <span className="text-slate-400">(opsional)</span></label>

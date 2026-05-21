@@ -17,9 +17,10 @@ interface Props {
   nama: string
   nim: string
   initials: string
+  avatarUrl: string | null
 }
 
-export default function MahasiswaMobileNav({ nama, nim, initials }: Props) {
+export default function MahasiswaMobileNav({ nama, nim, initials, avatarUrl }: Props) {
   const [open, setOpen] = useState(false)
   const pathname = usePathname()
 
@@ -62,8 +63,13 @@ export default function MahasiswaMobileNav({ nama, nim, initials }: Props) {
         {/* Header — user info */}
         <div className="px-5 py-5 border-b border-slate-100 flex items-start justify-between gap-3">
           <div className="flex items-center gap-3 min-w-0">
-            <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
-              <span className="text-sm font-bold text-blue-700">{initials}</span>
+            <div className="w-10 h-10 rounded-full overflow-hidden bg-blue-100 flex items-center justify-center flex-shrink-0">
+              {avatarUrl ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={avatarUrl} alt="Foto profil" className="w-full h-full object-cover" />
+              ) : (
+                <span className="text-sm font-bold text-blue-700">{initials}</span>
+              )}
             </div>
             <div className="min-w-0">
               <p className="font-semibold text-slate-800 text-sm truncate">{nama}</p>

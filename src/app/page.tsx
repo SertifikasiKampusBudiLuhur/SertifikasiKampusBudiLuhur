@@ -8,6 +8,7 @@ import ProgramCarousel from './_components/ProgramCarousel'
 import ProgramsGrid from './_components/ProgramsGrid'
 import FooterBL from './_components/FooterBL'
 import MobileNav from './_components/MobileNav'
+import HeroSlider from './_components/HeroSlider'
 
 const SESI_BADGE: Record<string, { label: string; icon: React.ReactNode; cls: string }> = {
   online:  { label: 'Online',  icon: <Wifi size={10} />,   cls: 'text-blue-700 bg-blue-50 border-blue-100' },
@@ -73,21 +74,9 @@ export default async function LandingPage() {
         </div>
       </nav>
 
-      {/* ── Hero ─────────────────────────────────────────────────── */}
-      <section
-        className="relative overflow-hidden text-white"
-        style={{
-          backgroundImage: "url('https://images.unsplash.com/photo-1758270704587-43339a801396?auto=format&fit=crop&w=1920&q=80')",
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
-      >
-        {/* Dark overlay — keeps text readable over the photo */}
-        <div className="absolute inset-0 bg-blue-800/75" />
-        {/* Subtle bottom gradient to blend into next section */}
-        <div className="absolute bottom-0 inset-x-0 h-24 bg-gradient-to-t from-white/5 to-transparent" />
-
-        <div className="relative max-w-5xl mx-auto px-6 pt-24 pb-28 md:pt-32 md:pb-36">
+      {/* ── Hero (slider) ────────────────────────────────────────── */}
+      <HeroSlider>
+        <div className="max-w-5xl mx-auto px-6 pt-24 pb-28 md:pt-32 md:pb-36">
           {/* Badge */}
           <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 text-blue-200 text-xs font-semibold px-4 py-2 rounded-full mb-8">
             <span className="w-1.5 h-1.5 bg-blue-400 rounded-full animate-pulse shrink-0" />
@@ -121,7 +110,7 @@ export default async function LandingPage() {
             </a>
           </div>
         </div>
-      </section>
+      </HeroSlider>
 
       {/* ── Alur Pendaftaran ─────────────────────────────────────── */}
       <section className="py-16 px-6 bg-white border-b border-slate-100">

@@ -29,7 +29,7 @@ export function formatDateTime(dateStr: string): string {
 export const STATUS_LABEL: Record<RegistrationStatus, string> = {
   DRAFT: 'Draft',
   PENDING_PAYMENT: 'Menunggu Pembayaran',
-  PAID: 'Sudah Dibayar',
+  PAID: 'Dibayar',
   APPROVED: 'Diterima',
   REJECTED: 'Ditolak',
 }

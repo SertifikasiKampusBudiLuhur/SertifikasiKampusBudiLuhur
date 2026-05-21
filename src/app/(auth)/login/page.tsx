@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, Eye, EyeOff } from 'lucide-react'
 import { createClient } from '@/lib/supabase/client'
 
 export default function LoginPage() {
@@ -12,6 +12,7 @@ export default function LoginPage() {
   const supabase = createClient()
   const [nim, setNim] = useState('')
   const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
@@ -92,14 +93,24 @@ export default function LoginPage() {
             </div>
             <div>
               <label className="label">Password</label>
-              <input
-                type="password"
-                value={password}
-                onChange={e => setPassword(e.target.value)}
-                className="input"
-                placeholder="••••••••"
-                required
-              />
+              <div className="relative">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  onChange={e => setPassword(e.target.value)}
+                  className="input pr-10"
+                  placeholder="••••••••"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(v => !v)}
+                  aria-label={showPassword ? 'Sembunyikan password' : 'Tampilkan password'}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors"
+                >
+                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
+              </div>
             </div>
             <button type="submit" className="btn-primary w-full py-2.5" disabled={loading}>
               {loading ? 'Memproses...' : 'Masuk'}
