@@ -2,15 +2,8 @@
 -- HELPER FUNCTIONS
 -- ============================================================
 
--- Increment kuota_terisi saat pembayaran berhasil
-CREATE OR REPLACE FUNCTION increment_kuota_terisi(program_id UUID)
-RETURNS VOID AS $$
-BEGIN
-  UPDATE public.certification_programs
-  SET kuota_terisi = kuota_terisi + 1
-  WHERE id = program_id;
-END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+-- Sinkronisasi kuota_terisi sekarang ditangani otomatis oleh trigger
+-- database. Lihat database/migration_v6.sql (trigger sync_kuota_terisi).
 
 -- Seed admin user (jalankan setelah buat user di Supabase Auth)
 -- UPDATE public.profiles SET role = 'admin' WHERE nim = 'ADMIN001';

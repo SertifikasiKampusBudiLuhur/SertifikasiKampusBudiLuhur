@@ -63,24 +63,13 @@ export async function POST(request: NextRequest) {
       paid_at: isPaid ? settlement_time : null,
     }).eq('id', transaction.id)
 
-    // Update status registrasi
+    // Update status registrasi.
+    // kuota_terisi otomatis tersinkron lewat trigger DB (lihat migration_v6.sql)
     if (isPaid) {
       await supabase
         .from('registrations')
         .update({ status: 'PAID' })
         .eq('id', transaction.registration_id)
-
-      // Tambah kuota_terisi pada program
-      // Ambil program_id dulu
-      const { data: reg } = await supabase
-        .from('registrations')
-        .select('program_id')
-        .eq('id', transaction.registration_id)
-        .single()
-
-      if (reg) {
-        await supabase.rpc('increment_kuota_terisi', { program_id: reg.program_id })
-      }
     } else if (isExpired) {
       await supabase
         .from('registrations')
