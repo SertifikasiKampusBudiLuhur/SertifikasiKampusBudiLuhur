@@ -4,8 +4,9 @@ import { VerifyActions } from './VerifyActions'
 import { ExportButton } from './ExportButton'
 import { UploadSertifikat } from './UploadSertifikat'
 import { SertifikatPreview } from './SertifikatPreview'
+import { KtmPreview } from './KtmPreview'
 import { RegistrationsFilter } from './RegistrationsFilter'
-import { Info, Lock, Award, Clock } from 'lucide-react'
+import { Info, Lock, Award, Clock, UserCircle } from 'lucide-react'
 
 type FilterStatus = 'ALL' | 'PAID' | 'APPROVED' | 'REJECTED' | 'PENDING_PAYMENT'
 
@@ -36,7 +37,7 @@ export default async function AdminRegistrationsPage({
     .from('registrations')
     .select(`
       *,
-      user:profiles!user_id(id, nama_lengkap, nim, program_studi, angkatan, no_wa),
+      user:profiles!user_id(id, nama_lengkap, nim, program_studi, angkatan, no_wa, avatar_url, ktm_url),
       program:certification_programs(id, nama, biaya),
       transaction:transactions(paid_at, payment_type)
     `)
@@ -162,19 +163,44 @@ export default async function AdminRegistrationsPage({
                   }`}
                 >
                   <td className="px-4 py-3">
-                    <p className="font-medium text-slate-800">{reg.user?.nama_lengkap}</p>
-                    <p className="text-xs text-slate-400">{reg.user?.nim}</p>
-                    <p className="text-xs text-slate-400">{reg.user?.program_studi}</p>
-                    {reg.user?.no_wa && (
-                      <a
-                        href={`https://wa.me/62${reg.user.no_wa.replace(/^0/, '')}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-xs text-green-600 hover:underline"
-                      >
-                        WA: {reg.user.no_wa}
-                      </a>
-                    )}
+                    <div className="flex items-start gap-2.5">
+                      {/* Avatar 40×40 */}
+                      <div className="flex-shrink-0 w-10 h-10 rounded-full overflow-hidden bg-slate-100 border border-slate-200">
+                        {reg.user?.avatar_url ? (
+                          <img
+                            src={reg.user.avatar_url}
+                            alt={reg.user?.nama_lengkap ?? 'Avatar'}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <UserCircle size={40} className="text-slate-300 w-full h-full" />
+                        )}
+                      </div>
+
+                      {/* Info */}
+                      <div className="min-w-0">
+                        <p className="font-medium text-slate-800 leading-snug">{reg.user?.nama_lengkap}</p>
+                        <p className="text-xs text-slate-400">{reg.user?.nim}</p>
+                        <p className="text-xs text-slate-400">{reg.user?.program_studi}</p>
+                        {reg.user?.no_wa && (
+                          <a
+                            href={`https://wa.me/62${reg.user.no_wa.replace(/^0/, '')}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-xs text-green-600 hover:underline"
+                          >
+                            WA: {reg.user.no_wa}
+                          </a>
+                        )}
+                        {reg.user?.ktm_url && (
+                          <KtmPreview
+                            registrationId={reg.id}
+                            nama={reg.user?.nama_lengkap ?? 'Mahasiswa'}
+                            ktmPath={reg.user.ktm_url}
+                          />
+                        )}
+                      </div>
+                    </div>
                   </td>
                   <td className="px-4 py-3">
                     <p className="font-medium text-slate-700">{reg.program?.nama}</p>
